@@ -1,7 +1,11 @@
 """ROAA Avatar — FastAPI backend."""
 
+from pathlib import Path
 from dotenv import load_dotenv
-load_dotenv()
+
+# Load .env from project root (two levels up from this file)
+_env_path = Path(__file__).resolve().parent.parent.parent / ".env"
+load_dotenv(_env_path)
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
