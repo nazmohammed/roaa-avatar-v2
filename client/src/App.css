@@ -1,0 +1,366 @@
+/* ── ROAA V2 — Full-screen keynote experience ─────────────────── */
+
+:root {
+  --ra-purple: #4c1d95;
+  --ra-purple-light: #7c3aed;
+  --ra-gold: #d4a843;
+  --ra-dark: #0f0b1a;
+  --ra-text: #e8e0f0;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: #000;
+  color: var(--ra-text);
+  overflow: hidden;
+}
+
+#root { width: 100vw; height: 100vh; }
+
+/* ── Splash ───────────────────────────────────────────────────── */
+
+.v2-splash {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0515 url('/bg-skybot.png') no-repeat center center;
+  background-size: cover;
+}
+
+.v2-splash-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  animation: fade-up 1s ease-out;
+}
+
+.v2-splash-logo {
+  height: 64px;
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,0.5));
+}
+
+.v2-splash-title {
+  font-size: 56px;
+  font-weight: 800;
+  letter-spacing: 12px;
+  background: linear-gradient(135deg, #d4a843, #f5d77a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.v2-splash-sub {
+  font-size: 18px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 3px;
+}
+
+.v2-splash-btn {
+  margin-top: 20px;
+  padding: 16px 48px;
+  border: 2px solid var(--ra-purple-light);
+  border-radius: 50px;
+  background: rgba(76, 29, 149, 0.3);
+  color: var(--ra-text);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s;
+  letter-spacing: 2px;
+}
+
+.v2-splash-btn:hover {
+  background: rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 40px rgba(124, 58, 237, 0.4);
+  transform: scale(1.05);
+}
+
+/* ── Stage (full-screen) ──────────────────────────────────────── */
+
+.v2-stage {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  background: #0a0515 url('/bg-skybot.png') no-repeat center center;
+  background-size: cover;
+}
+
+/* ── Phone ring overlay ────────────────────────────────────────── */
+
+.v2-ringing-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.v2-ring-icon {
+  font-size: 72px;
+  animation: ring-shake 0.4s ease-in-out infinite;
+}
+
+.v2-ring-label {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ra-gold);
+  letter-spacing: 1px;
+  animation: hint-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes ring-shake {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(15deg); }
+  30% { transform: rotate(-15deg); }
+  45% { transform: rotate(12deg); }
+  60% { transform: rotate(-10deg); }
+  75% { transform: rotate(5deg); }
+}
+
+/* ── Keyword highlight cards (right side) ─────────────────────── */
+
+.v2-highlights-overlay {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 340px;
+  pointer-events: none;
+}
+
+.v2-highlight-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  animation: card-fly-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.v2-highlight-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ra-gold);
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 0 4px 2px;
+}
+
+.v2-highlight-card {
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(76, 29, 149, 0.55), rgba(30, 15, 60, 0.75));
+  border: 1px solid rgba(124, 58, 237, 0.25);
+  box-shadow: 0 4px 16px rgba(76, 29, 149, 0.2);
+  backdrop-filter: blur(14px);
+  animation: card-fly-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.v2-highlight-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.3px;
+}
+
+/* ── Lower third (presenter banner) ───────────────────────────── */
+
+.v2-lower-third {
+  position: absolute;
+  bottom: 100px;
+  left: 48px;
+  z-index: 20;
+  animation: lt-slide-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.v2-lt-name {
+  font-size: 28px;
+  font-weight: 800;
+  color: #fff;
+  background: linear-gradient(135deg, var(--ra-purple), rgba(76, 29, 149, 0.9));
+  padding: 12px 28px 8px;
+  border-radius: 8px 8px 0 0;
+  letter-spacing: 0.5px;
+}
+
+.v2-lt-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--ra-gold);
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(8px);
+  padding: 8px 28px 10px;
+  border-radius: 0 0 8px 8px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+@keyframes lt-slide-in {
+  from { opacity: 0; transform: translateX(-40px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Overlay cards (agents / trainees) ────────────────────────── */
+
+.v2-cards-overlay {
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 380px;
+}
+
+.v2-card {
+  padding: 18px 24px;
+  border-radius: 16px;
+  backdrop-filter: blur(16px);
+  animation: card-fly-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.v2-card.agent {
+  background: linear-gradient(135deg, rgba(76, 29, 149, 0.7), rgba(30, 15, 60, 0.85));
+  border: 1px solid rgba(124, 58, 237, 0.35);
+  box-shadow: 0 8px 32px rgba(76, 29, 149, 0.3);
+}
+
+.v2-card.trainee {
+  background: linear-gradient(135deg, rgba(212, 168, 67, 0.15), rgba(30, 20, 10, 0.8));
+  border: 1px solid rgba(212, 168, 67, 0.3);
+  box-shadow: 0 8px 32px rgba(212, 168, 67, 0.15);
+}
+
+.v2-card-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.3px;
+}
+
+.v2-card-desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+@keyframes card-fly-in {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Trainee grid — two columns for longer lists */
+.v2-cards-overlay.trainee {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 10px;
+  max-width: 500px;
+}
+
+.v2-card.trainee {
+  flex: 0 0 calc(50% - 5px);
+  padding: 12px 18px;
+  text-align: center;
+}
+
+/* ── Advance hint ─────────────────────────────────────────────── */
+
+.v2-advance-hint {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  z-index: 30;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.35);
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  animation: hint-pulse 2.5s ease-in-out infinite;
+}
+
+.v2-advance-hint:hover {
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+@keyframes hint-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* ── Error / Finished overlays ────────────────────────────────── */
+
+.v2-error-overlay {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(239, 68, 68, 0.15);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  border-radius: 14px;
+  padding: 14px 24px;
+  color: #ff6b6b;
+  font-size: 14px;
+}
+
+.v2-error-overlay button {
+  padding: 6px 18px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.v2-finished-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  background: rgba(10, 5, 21, 0.6);
+  animation: fade-up 1.2s ease-out;
+}
+
+.v2-finished-tagline {
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--ra-gold);
+  text-align: center;
+  animation: fade-up 1.5s ease-out;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
